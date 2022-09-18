@@ -14,6 +14,7 @@ class Folder
             format: { with: /\A[a-zA-Z0-9 _-]+\z/ }
 
   before_save :validate_present_path
+  after_update :move_related_resources, if: proc { |folder| folder.path_previously_changed? }
   after_destroy :remove_sub_folders, :remove_files_inside
 
   def self.find_by_path(path)
@@ -67,5 +68,13 @@ class Folder
 
   def remove_files_inside
     self.items.destroy
+  end
+
+  def move_related_resources
+    previous_path = self.path_previously_was
+    previous_path = previous_path + (path == SEPARATOR ? "" : SEPARATOR) + name
+    new_path = self.path
+
+    Folder.where(path: previous_path).each { |folder| folder.update(path: new_path) }
   end
 end

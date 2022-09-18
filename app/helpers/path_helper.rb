@@ -9,4 +9,8 @@ module PathHelper
   def check_valid_path
     raise "Invalid path" unless /\A(\/[a-zA-Z0-9 _-]+)+\z/.match?(path)
   end
+
+  def check_sub_path(path, destination_path)
+    raise "Cannot move to sub folder itself" if destination_path.start_with?(path) && path != SEPARATOR
+  end
 end
