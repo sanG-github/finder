@@ -15,6 +15,20 @@ class Folder
 
   before_save :validate_present_path
 
+  def self.find_by_path(path)
+    *file_path, file_name = path.split(SEPARATOR)
+    file_path = file_path.join(SEPARATOR).presence || SEPARATOR
+
+    find_by(path: file_path, name: file_name)
+  end
+
+  def self.find_by_path!(path)
+    *file_path, file_name = path.split(SEPARATOR)
+    file_path = file_path.join(SEPARATOR).presence || SEPARATOR
+
+    find_by!(path: file_path, name: file_name)
+  end
+
   def current_path
     path + SEPARATOR + name
   end

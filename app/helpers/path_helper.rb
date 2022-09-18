@@ -6,7 +6,7 @@ module PathHelper
     [base_path.presence || SEPARATOR, name]
   end
 
-  def check_valid_path!
+  def check_valid_path
     raise "Invalid path" unless /\A(\/[a-zA-Z0-9 _-]+)+\z/.match?(path)
   end
 end
