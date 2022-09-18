@@ -1,4 +1,4 @@
-class FoldersController < ApplicationController
+class Api::V1::FoldersController < ApplicationController
   before_action :set_folder, only: %i[ show update destroy ]
 
   # GET /folders

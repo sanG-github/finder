@@ -1,5 +1,5 @@
-class ResourcesController < ApplicationController
-  extend ValidateCommand
+class Api::V1::ResourcesController < ApplicationController
+  include ValidateCommand
 
   def create
     validate_create_command!

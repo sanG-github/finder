@@ -1,5 +1,5 @@
 class Resources::CreateService
-  def initialize(params)
+  def initialize(params:)
     @command = params[:cmd]
     @arguments = parse_command
   end

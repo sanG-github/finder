@@ -9,8 +9,8 @@ class Folders::CreateService < BaseService
 
   def call
     check_valid_path
-
     @path, @name = separate_path_and_name if name.blank?
+    check_existed_file
 
     create_folder_without_parent! if without_parent
 
@@ -20,4 +20,10 @@ class Folders::CreateService < BaseService
   private
 
   attr_reader :path, :name, :without_parent
+
+  def check_existed_file
+    file = Item.find_by_path_name(path, name)
+
+    raise "Conflict with existed file!" if file
+  end
 end
