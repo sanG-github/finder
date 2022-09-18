@@ -15,12 +15,16 @@ class Item
   def self.find_by_path_name(path, name)
     folder = Folder.find_by_path(path)
 
-    find_by(folder_id: folder.id, name: name)
+    find_by(folder_id: folder&.id, name: name)
   end
 
   def self.find_by_path_name!(path, name)
     folder = Folder.find_by_path!(path)
 
     find_by!(folder_id: folder.id, name: name)
+  end
+
+  def current_path
+    folder.current_path + SEPARATOR + name
   end
 end

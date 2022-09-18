@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :items
       resources :folders
-      resources :resources, only: %i(create destroy)
+      resources :resources do
+        post :cr, on: :collection
+        delete :rm, on: :collection
+      end
     end
   end
 end
