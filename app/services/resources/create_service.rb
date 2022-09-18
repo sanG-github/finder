@@ -5,7 +5,6 @@ class Resources::CreateService
   end
 
   def call
-    debugger
     return create_folder if has_one_argument?
     return handle_two_arguments if has_two_arguments?
     return create_file_without_parent if has_three_arguments? && without_parent?
