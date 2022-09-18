@@ -8,13 +8,15 @@ class Files::CreateService < BaseService
   end
 
   def call
-    check_valid_path
-    check_existed_folder
+    Item.with_session do
+      check_valid_path
+      check_existed_folder
 
-    @path, @name = separate_path_and_name
+      @path, @name = separate_path_and_name
 
-    create_folder_without_parent! if without_parent
-    create_file!
+      create_folder_without_parent! if without_parent
+      create_file!
+    end
   end
 
   private
