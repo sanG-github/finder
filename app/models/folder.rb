@@ -38,6 +38,16 @@ class Folder
     Folder.where(path: current_path)
   end
 
+  def size
+    files_size = items.reduce(0) { |sum, file| sum + file.data&.size }
+
+    sub_folders_size = sub_folders&.reduce(0) do |sum, folder|
+      sum + folder.size
+    end
+
+    files_size + sub_folders_size
+  end
+
   private
 
   def validate_present_path
