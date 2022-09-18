@@ -1,51 +1,25 @@
 class Api::V1::ItemsController < ApplicationController
-  before_action :set_item, only: %i[ show update destroy ]
+  include ValidateCommand
 
-  # GET /items
-  def index
-    @items = Item.all
+  def cat
+    validate_cat_command!
+    file = Files::FindByPathService.new(path: parse_path).call
 
-    render json: @items
-  end
-
-  # GET /items/1
-  def show
-    render json: @item
-  end
-
-  # POST /items
-  def create
-    @item = Item.new(item_params)
-
-    if @item.save
-      render json: @item, status: :created, location: @item
-    else
-      render json: @item.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /items/1
-  def update
-    if @item.update(item_params)
-      render json: @item
-    else
-      render json: @item.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /items/1
-  def destroy
-    @item.destroy
+    render json: file
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_item
-      @item = Item.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def item_params
-      params.require(:item).permit(:name, :data, :folder_id)
-    end
+  def parse_path
+    _prefix, path, *extra_arguments = params[:cmd].split
+    raise "Invalid command" if extra_arguments.any?
+
+    path
+  end
+
+  def validate_cat_command!
+    regex_create = /\Acat /
+
+    verify_command!(regex_create, params[:cmd])
+  end
 end
