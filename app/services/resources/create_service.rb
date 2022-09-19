@@ -63,8 +63,11 @@ class Resources::CreateService
   end
 
   def parse_command
-    _prefix, *arguments = command.split
+    cmd, file_content = command.split("'") if command.include?("'")
+    cmd, file_content = command.split("\"") if command.include?("\"")
 
-    arguments
+    _prefix, *arguments = cmd.split
+
+    arguments.is_a?(Array) ? arguments << file_content : [arguments, file_content]
   end
 end
