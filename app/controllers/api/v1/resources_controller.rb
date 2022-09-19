@@ -5,14 +5,32 @@ class Api::V1::ResourcesController < ApplicationController
     validate_create_command!
     result = Resources::CreateService.new(params: params).call
 
-    render json: result
+    render json: {
+      resource: result,
+      message: "Created successfully!"
+    }
+  end
+
+  def mv
+    validate_move_command!
+
+    path, destination_path = parse_move_command
+    result = Resources::MoveService.new(path: path, destination_path: destination_path).call
+
+    render json: {
+      resource: result,
+      message: "Moved successfully!"
+    }
   end
 
   def rm
     validate_delete_command!
     result = Resources::DeleteService.new(params: params).call
 
-    render json: result
+    render json: {
+      resource: result,
+      message: "Removed successfully!"
+    }
   end
 
   private

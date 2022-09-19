@@ -12,7 +12,7 @@ class Api::V1::FoldersController < ApplicationController
 
   def parse_path
     _prefix, path, *extra_arguments = params[:cmd].split
-    raise "Invalid command" if extra_arguments.any?
+    raise "Invalid command" if extra_arguments.any? || !path
 
     path
   end

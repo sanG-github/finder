@@ -7,6 +7,7 @@ module PathHelper
   end
 
   def check_valid_path
+    raise "Invalid path, path must start with /" if path[0] != '/'
     raise "Invalid path" unless /\A(\/[a-zA-Z0-9 _-]+)+\z/.match?(path)
   end
 end
