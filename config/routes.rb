@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       end
       resources :resources do
         post :cr, on: :collection
+        put :mv, on: :collection
         delete :rm, on: :collection
       end
     end
