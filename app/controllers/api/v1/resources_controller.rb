@@ -1,6 +1,15 @@
 class Api::V1::ResourcesController < ApplicationController
   include ValidateCommand
 
+  def find
+    validate_find_command!
+
+    name, path = parse_find_command
+    result = Resources::FindService.new(path: path, name: name).call
+
+    render json: result
+  end
+
   def cr
     validate_create_command!
     result = Resources::CreateService.new(params: params).call
@@ -46,6 +55,12 @@ class Api::V1::ResourcesController < ApplicationController
 
   private
 
+  def validate_find_command!
+    regex_create = /\Afind /
+
+    verify_command!(regex_create, params[:cmd])
+  end
+
   def validate_create_command!
     regex_create = /\Acr /
 
@@ -76,5 +91,13 @@ class Api::V1::ResourcesController < ApplicationController
     raise "Invalid command" if extra_arguments.any? || path.blank? || destination_path.blank?
 
     [path, destination_path]
+  end
+
+  def parse_find_command
+    _prefix, name, path, *extra_arguments = params[:cmd].split
+
+    raise "Invalid command" if extra_arguments.any? || name.blank? || path.blank?
+
+    [name, path]
   end
 end
