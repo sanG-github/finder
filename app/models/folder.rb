@@ -15,6 +15,7 @@ class Folder
 
   before_save :validate_present_path
   after_update :move_related_resources, if: proc { |folder| folder.path_previously_changed? }
+  after_update :update_related_resources, if: proc { |folder| folder.name_previously_changed? }
   after_destroy :remove_sub_folders, :remove_files_inside
 
   def self.find_by_path(path)
@@ -76,5 +77,12 @@ class Folder
     new_path = self.path
 
     Folder.where(path: previous_path).each { |folder| folder.update(path: new_path) }
+  end
+
+  def update_related_resources
+    previous_name = self.name_previously_was
+    previous_path = path + (path == SEPARATOR ? "" : SEPARATOR) + previous_name
+
+    Folder.where(path: previous_path).each { |folder| folder.update(path: self.current_path) }
   end
 end

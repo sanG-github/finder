@@ -23,6 +23,17 @@ class Api::V1::ResourcesController < ApplicationController
     }
   end
 
+  def up
+    validate_update_command!
+
+    result = Resources::UpdateService.new(params: params).call
+
+    render json: {
+      resource: result,
+      message: "Updated successfully!"
+    }
+  end
+
   def rm
     validate_delete_command!
     result = Resources::DeleteService.new(params: params).call
@@ -43,6 +54,12 @@ class Api::V1::ResourcesController < ApplicationController
 
   def validate_move_command!
     regex_create = /\Amv /
+
+    verify_command!(regex_create, params[:cmd])
+  end
+
+  def validate_update_command!
+    regex_create = /\Aup /
 
     verify_command!(regex_create, params[:cmd])
   end

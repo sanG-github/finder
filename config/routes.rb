@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :resources do
         post :cr, on: :collection
         put :mv, on: :collection
+        put :up, on: :collection
         delete :rm, on: :collection
       end
     end
