@@ -23,16 +23,6 @@ class Api::V1::ResourcesController < ApplicationController
     }
   end
 
-  def mv
-    validate_move_command!
-
-    path, destination_path = parse_move_command
-    result = Resources::MoveService.new(path: path, destination_path: destination_path).call
-
-    render json: result
-
-  end
-
   def rm
     validate_delete_command!
     result = Resources::DeleteService.new(params: params).call

@@ -66,8 +66,9 @@ class Resources::CreateService
     cmd, file_content = command.split("'") if command.include?("'")
     cmd, file_content = command.split("\"") if command.include?("\"")
 
-    _prefix, *arguments = cmd.split
+    _prefix, *arguments = cmd&.split || command&.split
 
-    arguments.is_a?(Array) ? arguments << file_content : [arguments, file_content]
+    arguments = arguments.is_a?(Array) ? arguments << file_content : [arguments, file_content]
+    arguments.compact
   end
 end

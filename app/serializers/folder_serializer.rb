@@ -1,5 +1,5 @@
 class FolderSerializer < ActiveModel::Serializer
-  attributes :current_path, :size, :created_at, :sub_folders
+  attributes :current_path, :name, :size, :created_at, :sub_folders
 
   has_many :items, key: :files
 

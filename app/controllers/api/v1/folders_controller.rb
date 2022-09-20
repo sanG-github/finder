@@ -1,11 +1,17 @@
 class Api::V1::FoldersController < ApplicationController
   include ValidateCommand
 
+  def roots
+    folders = Folder.where(path: "/")
+
+    render json: folders
+  end
+
   def ls
     validate_ls_command!
     folder = Folder.find_by_path!(parse_path)
 
-    render json: folder, serializer: ::FolderSerializer
+    render json: folder
   end
 
   private
