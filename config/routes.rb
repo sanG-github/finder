@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         get :cat, on: :collection
       end
       resources :resources do
+        get :find, on: :collection
         post :cr, on: :collection
         put :mv, on: :collection
         put :up, on: :collection
